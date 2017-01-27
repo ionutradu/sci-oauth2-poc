@@ -69,9 +69,8 @@ public class AuthorizeResource {
         }
         
         if(username == null || password == null) {
+            request.getRequestDispatcher("/index.jsp?client_id=" + client_id + "&response_type=" + response_type + "&callback_uri=" + callback_uri).forward(request, response);
             
-            RequestDispatcher dispatcher = request.getRequestDispatcher("http://localhost:8080/AuthorizationResourceServer/?" + client_id + "&response_type=" + response_type + "&callback_uri=" + callback_uri);
-            dispatcher.forward(request, response);
             return Response.status(Status.OK).build();
         }
         
