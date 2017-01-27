@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import ro.sci.service.AuthService;
 import ro.sci.service.ResourceService;
 
@@ -19,6 +20,7 @@ import java.net.URISyntaxException;
 
 @RestController
 @RequestMapping("/app")
+@EnableWebMvc
 public class AuthResource {
 
     @Autowired

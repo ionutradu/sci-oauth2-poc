@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import ro.sci.service.AuthService;
 import ro.sci.service.ResourceService;
 import ro.sci.web.dto.PictureLocation;
@@ -19,6 +20,7 @@ import java.util.Arrays;
 
 @RestController
 @RequestMapping("/app")
+@EnableWebMvc
 public class UserResource {
 
     @Autowired
@@ -32,7 +34,7 @@ public class UserResource {
 
     @CrossOrigin(origins = "http://localhost:8090")
     @RequestMapping("/profile/picture")
-    public ResponseEntity<String> getProfilePicture(@RequestParam(required = false) String authorization_code) throws URISyntaxException {
+    public ResponseEntity<PictureLocation> getProfilePicture(@RequestParam(required = false) String authorization_code) throws URISyntaxException {
 
         if (StringUtils.isEmpty(authorization_code)) {
             String redirectUrl = authService.generateAuthUrl();
@@ -47,9 +49,9 @@ public class UserResource {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 
-        HttpEntity<String> entity = new HttpEntity<String>(headers);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        ResponseEntity<String> exchange = restTemplate.exchange(resourceUri, HttpMethod.GET, entity, String.class);
+        ResponseEntity<PictureLocation> exchange = restTemplate.exchange(resourceUri, HttpMethod.GET, entity, PictureLocation.class);
 
         return ResponseEntity.ok(exchange.getBody());
     }
