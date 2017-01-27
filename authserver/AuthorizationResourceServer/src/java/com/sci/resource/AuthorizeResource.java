@@ -85,9 +85,11 @@ public class AuthorizeResource {
             case "code" : {
                 if(Constants.clients.containsKey(client_id)) {
                     String authorizationCode = Constants.generateAuthorizationCode(client_id, callback_uri, username);
-                    String redirect_uri = Constants.clients.get(client_id).getCallback_uri() + "?authorization_code=" + authorizationCode + "&username=" + username;
+                    String redirect_uri = Constants.clients.get(client_id).getCallback_uri();
                     JSONObject urlResponse = new JSONObject();
                     urlResponse.put("url", redirect_uri);
+                    urlResponse.put("authorization_code", authorizationCode);
+                    urlResponse.put("username", username);
                     return Response.status(Status.OK).entity(urlResponse.toString()).type(MediaType.APPLICATION_JSON).build();
                 } else {
                     return Response.status(Status.UNAUTHORIZED).build();
