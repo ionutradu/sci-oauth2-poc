@@ -7,8 +7,13 @@ package com.sci.resource;
 
 import com.sci.general.Constants;
 import com.sci.general.UserDetails;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.POST;
@@ -35,12 +40,16 @@ public class AuthorizeResource {
 
     @Context
     private UriInfo context;
+    
+    @Context
+    private HttpServletRequest request;
+    @Context 
+    private HttpServletResponse response;
 
     /**
      * Creates a new instance of ItemsResource
      */
-    public AuthorizeResource() {
-    }
+    
 
     /**
      * Retrieves representation of an instance of com.sci.resource.AuthorizeResource
@@ -52,7 +61,7 @@ public class AuthorizeResource {
                             @QueryParam("response_type") String response_type, 
                             @QueryParam("callback_uri") String callback_uri,
                             @QueryParam("username") String username,
-                            @QueryParam("password") String password) throws JSONException, URISyntaxException {
+                            @QueryParam("password") String password) throws JSONException, URISyntaxException, ServletException, IOException {
         
         if(client_id == null || response_type == null || callback_uri == null) { 
             
@@ -60,13 +69,10 @@ public class AuthorizeResource {
         }
         
         if(username == null || password == null) {
-            //http://localhost:8080/AuthorizationResourceServer/?client_id=app_20000300_1471874043775&response_type=code&callback_uri=/app/profile/picture
-            URI loginPageUri = new URI("http://localhost:8080/AuthorizationResourceServer/?" + client_id + "&response_type=" + response_type + "&callback_uri=" + callback_uri);
-            return Response.temporaryRedirect(loginPageUri).header("Access-Control-Allow-Origin", "*")
-            .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
-            .header("Access-Control-Allow-Credentials", "true")
-            .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
-            .header("Access-Control-Max-Age", "1209600").build();
+            
+            RequestDispatcher dispatcher = request.getRequestDispatcher("http://localhost:8080/AuthorizationResourceServer/?" + client_id + "&response_type=" + response_type + "&callback_uri=" + callback_uri);
+            dispatcher.forward(request, response);
+            return Response.status(Status.OK).build();
         }
         
         if(!Constants.checkUser(username, password)) {
