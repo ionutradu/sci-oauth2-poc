@@ -62,7 +62,11 @@ public class AuthorizeResource {
         if(username == null || password == null) {
             //http://localhost:8080/AuthorizationResourceServer/?client_id=app_20000300_1471874043775&response_type=code&callback_uri=/app/profile/picture
             URI loginPageUri = new URI("http://localhost:8080/AuthorizationResourceServer/?" + client_id + "&response_type=" + response_type + "&callback_uri=" + callback_uri);
-            return Response.temporaryRedirect(loginPageUri).build();
+            return Response.temporaryRedirect(loginPageUri).header("Access-Control-Allow-Origin", "*")
+            .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
+            .header("Access-Control-Allow-Credentials", "true")
+            .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
+            .header("Access-Control-Max-Age", "1209600").build();
         }
         
         if(!Constants.checkUser(username, password)) {
