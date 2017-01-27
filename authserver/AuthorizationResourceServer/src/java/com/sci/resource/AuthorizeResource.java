@@ -69,20 +69,12 @@ public class AuthorizeResource {
         }
         
         if(username == null || password == null) {
-/*
-            response.setHeader("Access-Control-Allow-Origin", "*");
-            response.setHeader("Access-Control-Allow-Headers", "origin, content-type, accept, authorization");
-            response.setHeader("Access-Control-Allow-Credentials", "true");
-            response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
-            response.setHeader("Access-Control-Max-Age", "1209600");
-            
-            request.getRequestDispatcher("/index.jsp?client_id=" + client_id + "&response_type=" + response_type + "&callback_uri=" + callback_uri).forward(request, response);
-  */          
+
             String redirect = "/AuthorizationResourceServer/index.jsp?client_id=" + client_id + "&response_type=" + response_type + "&callback_uri=" + callback_uri;
-            URI redirect_uri = new URI(redirect);
-            return Response.temporaryRedirect(redirect_uri).build();
+            JSONObject urlResponse = new JSONObject();
+            urlResponse.put("url", redirect);
+            return Response.status(Status.OK).entity(urlResponse.toString()).type(MediaType.APPLICATION_JSON).build();
             
-           // return Response.status(302).build();  
         }
         
         if(!Constants.checkUser(username, password)) {
@@ -93,8 +85,10 @@ public class AuthorizeResource {
             case "code" : {
                 if(Constants.clients.containsKey(client_id)) {
                     String authorizationCode = Constants.generateAuthorizationCode(client_id, callback_uri, username);
-                    URI redirect_uri = new URI(Constants.clients.get(client_id).getCallback_uri() + "?authorization_code=" + authorizationCode + "&username=" + username);
-                    return Response.temporaryRedirect(redirect_uri).build();
+                    String redirect_uri = Constants.clients.get(client_id).getCallback_uri() + "?authorization_code=" + authorizationCode + "&username=" + username;
+                    JSONObject urlResponse = new JSONObject();
+                    urlResponse.put("url", redirect_uri);
+                    return Response.status(Status.OK).entity(urlResponse.toString()).type(MediaType.APPLICATION_JSON).build();
                 } else {
                     return Response.status(Status.UNAUTHORIZED).build();
                 }
