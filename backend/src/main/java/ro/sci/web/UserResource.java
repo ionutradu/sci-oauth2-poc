@@ -1,8 +1,7 @@
 package ro.sci.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +14,8 @@ import ro.sci.web.dto.PictureLocation;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 @RestController
 @RequestMapping("/app")
@@ -43,10 +44,13 @@ public class UserResource {
 
         URI resourceUri = resourceService.getResourceUri(authorization_code);
 
-        PictureLocation pictureLocation = restTemplate.getForObject(resourceUri, PictureLocation.class);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 
-        return ResponseEntity.ok(pictureLocation);
+        HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
+
+        ResponseEntity<PictureLocation> exchange = restTemplate.exchange(resourceUri, HttpMethod.GET, entity, PictureLocation.class);
+
+        return ResponseEntity.ok(exchange.getBody());
     }
-
-
 }
