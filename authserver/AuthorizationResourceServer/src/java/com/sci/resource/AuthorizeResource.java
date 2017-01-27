@@ -7,8 +7,13 @@ package com.sci.resource;
 
 import com.sci.general.Constants;
 import com.sci.general.UserDetails;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.POST;
@@ -35,12 +40,16 @@ public class AuthorizeResource {
 
     @Context
     private UriInfo context;
+    
+    @Context
+    private HttpServletRequest request;
+    @Context 
+    private HttpServletResponse response;
 
     /**
      * Creates a new instance of ItemsResource
      */
-    public AuthorizeResource() {
-    }
+    
 
     /**
      * Retrieves representation of an instance of com.sci.resource.AuthorizeResource
@@ -52,15 +61,20 @@ public class AuthorizeResource {
                             @QueryParam("response_type") String response_type, 
                             @QueryParam("callback_uri") String callback_uri,
                             @QueryParam("username") String username,
-                            @QueryParam("password") String password) throws JSONException, URISyntaxException {
+                            @QueryParam("password") String password) throws JSONException, URISyntaxException, ServletException, IOException {
         
         if(client_id == null || response_type == null || callback_uri == null) { 
+            
             return Response.status(Status.BAD_REQUEST).build(); 
         }
         
         if(username == null || password == null) {
-            URI loginPageUri = new URI("..?client_id=" + client_id + "&response_type=" + response_type + "&callback_uri=" + callback_uri);
-            return Response.temporaryRedirect(loginPageUri).build();
+
+            String redirect = "/AuthorizationResourceServer/index.jsp?client_id=" + client_id + "&response_type=" + response_type + "&callback_uri=" + callback_uri;
+            JSONObject urlResponse = new JSONObject();
+            urlResponse.put("url", redirect);
+            return Response.status(Status.OK).entity(urlResponse.toString()).type(MediaType.APPLICATION_JSON).build();
+            
         }
         
         if(!Constants.checkUser(username, password)) {
@@ -71,8 +85,12 @@ public class AuthorizeResource {
             case "code" : {
                 if(Constants.clients.containsKey(client_id)) {
                     String authorizationCode = Constants.generateAuthorizationCode(client_id, callback_uri, username);
-                    URI redirect_uri = new URI(Constants.clients.get(client_id).getCallback_uri() + "?authorization_code=" + authorizationCode + "&username=" + username);
-                    return Response.temporaryRedirect(redirect_uri).build();
+                    String redirect_uri = Constants.clients.get(client_id).getCallback_uri();
+                    JSONObject urlResponse = new JSONObject();
+                    urlResponse.put("url", redirect_uri);
+                    urlResponse.put("authorization_code", authorizationCode);
+                    urlResponse.put("username", username);
+                    return Response.status(Status.OK).entity(urlResponse.toString()).type(MediaType.APPLICATION_JSON).build();
                 } else {
                     return Response.status(Status.UNAUTHORIZED).build();
                 }

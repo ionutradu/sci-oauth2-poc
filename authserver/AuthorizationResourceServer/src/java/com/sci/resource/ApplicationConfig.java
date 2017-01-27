@@ -30,6 +30,7 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(com.sci.resource.AuthorizeResource.class);
+        resources.add(com.sci.resource.CORSFilter.class);
         resources.add(com.sci.resource.ProfileResource.class);
     }
     
