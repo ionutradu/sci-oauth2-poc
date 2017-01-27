@@ -10,7 +10,7 @@
 			$scope.data = {};
 			debugger;
 			if($scope.authCode && $scope.user) {
-				ResourceService.get({authorization_code: $scope.authCode, username: $scope.user}, function(response) {
+				ResourceService.get({authorization_code: $scope.authCode}, function(response) {
 				    console.log(response);
 				});
 			} else {
