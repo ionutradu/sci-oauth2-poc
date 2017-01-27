@@ -43,9 +43,9 @@ public class UserResource {
 
         URI resourceUri = resourceService.getResourceUri(authorization_code);
 
-        String pictureUrl = restTemplate.getForObject(resourceUri, String.class);
+        PictureLocation pictureLocation = restTemplate.getForObject(resourceUri, PictureLocation.class);
 
-        return ResponseEntity.ok(new PictureLocation(pictureUrl));
+        return ResponseEntity.ok(pictureLocation);
     }
 
 
