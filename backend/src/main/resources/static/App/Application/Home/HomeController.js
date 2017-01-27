@@ -8,23 +8,9 @@
 	    $scope.loading = true;
 		$scope.getData = function() {
 			$scope.data = {};
-			
 			ResourceService.get(function(response) {
-			    console.log(response);
-			    $scope.loading = false;
+			    location.href = "http://localhost:8080" + response.url;
 			});
 		}
-//	    var url = "http://localhost:8090/app/profile/picture";
-//	    $http({
-//	        method: 'JSONP',
-//	        url: url
-//	    }).
-//	    success(function(status) {
-//	        console.log(status)
-//	    }).
-//	    error(function(status) {
-//	        console.log(status);
-//	    });
-		//	$scope.loading = false;
 	}
 }());
