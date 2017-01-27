@@ -60,7 +60,8 @@ public class AuthorizeResource {
         }
         
         if(username == null || password == null) {
-            URI loginPageUri = new URI("..?client_id=" + client_id + "&response_type=" + response_type + "&callback_uri=" + callback_uri);
+            //http://localhost:8080/AuthorizationResourceServer/?client_id=app_20000300_1471874043775&response_type=code&callback_uri=/app/profile/picture
+            URI loginPageUri = new URI("http://localhost:8080/AuthorizationResourceServer/?" + client_id + "&response_type=" + response_type + "&callback_uri=" + callback_uri);
             return Response.temporaryRedirect(loginPageUri).build();
         }
         
