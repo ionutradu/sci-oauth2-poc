@@ -16,6 +16,9 @@ import javax.ws.rs.core.UriInfo;
 import java.net.URI;
 import com.sci.general.Constants;
 import java.net.URISyntaxException;
+import javax.ws.rs.core.Response.Status;
+import org.json.JSONException;
+import org.json.JSONObject;
 /**
  *
  * @author gabi
@@ -28,7 +31,7 @@ public class ProfileResource {
     
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public Response getJson(@QueryParam("authorization_code") String authorization_code) throws URISyntaxException {
+    public Response getJson(@QueryParam("authorization_code") String authorization_code) throws URISyntaxException, JSONException {
         
         if(!Constants.authorizationCodeUsername.containsKey(authorization_code)) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -37,6 +40,9 @@ public class ProfileResource {
         String username = Constants.authorizationCodeUsername.get(authorization_code);
         URI profilePicture = new URI(Constants.users.get(username).getProfilePicture());
         
-        return Response.temporaryRedirect(profilePicture).build();
+        JSONObject response = new JSONObject();
+        response.put("url", profilePicture);
+        
+        return Response.status(Status.OK).entity(response.toString()).type(MediaType.APPLICATION_JSON).build();
     }
 }
