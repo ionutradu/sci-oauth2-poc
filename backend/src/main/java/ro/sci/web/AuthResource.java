@@ -30,7 +30,7 @@ public class AuthResource {
     @Autowired
     private RestTemplate restTemplate;
 
-    @CrossOrigin
+    @CrossOrigin(origins = "http://localhost:8090")
     @RequestMapping("/auth")
     public ResponseEntity<Void> saveAuthorizationCode(@NotEmpty @RequestParam String authorization_code,
                                                       @NotEmpty @RequestParam String username) throws URISyntaxException {

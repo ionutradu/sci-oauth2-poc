@@ -28,7 +28,7 @@ public class UserResource {
     @Autowired
     private RestTemplate restTemplate;
 
-    @CrossOrigin
+    @CrossOrigin(origins = "http://localhost:8090")
     @RequestMapping("/profile/picture")
     public ResponseEntity<Void> getProfilePicture(@RequestParam(required = false) String authorization_code) throws URISyntaxException {
 
