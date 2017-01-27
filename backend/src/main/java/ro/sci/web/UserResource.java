@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import ro.sci.service.AuthService;
 import ro.sci.service.ResourceService;
+import ro.sci.web.dto.PictureLocation;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -30,7 +31,7 @@ public class UserResource {
 
     @CrossOrigin(origins = "http://localhost:8090")
     @RequestMapping("/profile/picture")
-    public ResponseEntity<Void> getProfilePicture(@RequestParam(required = false) String authorization_code) throws URISyntaxException {
+    public ResponseEntity<PictureLocation> getProfilePicture(@RequestParam(required = false) String authorization_code) throws URISyntaxException {
 
         if (StringUtils.isEmpty(authorization_code)) {
             String redirectUrl = authService.generateAuthUrl();
@@ -44,10 +45,7 @@ public class UserResource {
 
         String pictureUrl = restTemplate.getForObject(resourceUri, String.class);
 
-        return ResponseEntity
-                .status(HttpStatus.TEMPORARY_REDIRECT)
-                .location(new URI(pictureUrl))
-                .build();
+        return ResponseEntity.ok(new PictureLocation(pictureUrl));
     }
 
 
