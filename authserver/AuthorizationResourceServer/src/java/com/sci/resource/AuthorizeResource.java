@@ -69,7 +69,7 @@ public class AuthorizeResource {
         }
         
         if(username == null || password == null) {
-
+/*
             response.setHeader("Access-Control-Allow-Origin", "*");
             response.setHeader("Access-Control-Allow-Headers", "origin, content-type, accept, authorization");
             response.setHeader("Access-Control-Allow-Credentials", "true");
@@ -77,8 +77,12 @@ public class AuthorizeResource {
             response.setHeader("Access-Control-Max-Age", "1209600");
             
             request.getRequestDispatcher("/index.jsp?client_id=" + client_id + "&response_type=" + response_type + "&callback_uri=" + callback_uri).forward(request, response);
+  */          
+            String redirect = "/AuthorizationResourceServer/index.jsp?client_id=" + client_id + "&response_type=" + response_type + "&callback_uri=" + callback_uri;
+            URI redirect_uri = new URI(redirect);
+            return Response.temporaryRedirect(redirect_uri).build();
             
-            return Response.status(Status.OK).build();  
+           // return Response.status(302).build();  
         }
         
         if(!Constants.checkUser(username, password)) {
