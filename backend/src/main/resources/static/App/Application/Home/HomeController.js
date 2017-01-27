@@ -6,14 +6,15 @@
 
 	function homeController($scope, $http, $cookieStore, ResourceService) {
 	    $scope.loading = true;
-		$scope.getData = function() {
+	    $scope.resourceUrl = "";
+		$scope.getData = function(req) {
 			$scope.data = {};
-			debugger;
 			if($scope.authCode && $scope.user) {
 				ResourceService.get({authorization_code: $scope.authCode}, function(response) {
-				    console.log(response);
+				    $scope.resourceUrl = response.url;
+				    $scope.loading = false;
 				});
-			} else {
+			} else if (req) {
 				ResourceService.get(function(response) {
 				    location.href = "http://localhost:8080" + response.url;
 				});
@@ -26,6 +27,13 @@
 			$scope.user = $cookieStore.get('username');
 			
 			$scope.getData();
+		}
+		
+		$scope.logOut = function() {
+			$cookieStore.remove("authorization_code");
+			$cookieStore.remove("username");
+			
+			$scope.checkAuth();
 		}
 		
 		$scope.checkAuth();

@@ -11,6 +11,9 @@
 			</a> <a class="sidebar-toggle"> <span class="sr-only">Toggle
 					navigation</span>
 			</a>
+			
+			<a style="cursor: pointer; color: white; padding: 10px" class="pull-right" ng-click="logOut()" ng-if="authCode">Logout</a>
+			
 		</nav>
 	</header>
 
@@ -20,12 +23,12 @@
 		<!-- Main content -->
 		<section class="content">
 		    <div class="row">
-                <button type="button" class="btn btn-block btn-success btn-lg" ng-click="checkAuth()">Show Profile Picture</button>
+                <button type="button" class="btn btn-block btn-success btn-lg" ng-click="getData(true)">Show Profile Picture</button>
 		    </div>
 
 			
 			<div class="row funky-show-hide" ng-hide="loading" style="text-align: center; margin-top: 200px;">
-                <img src="http://www.w3schools.com/html/pic_mountain.jpg" alt="Mountain View" style="width:400px">
+                <img ng-src="{{resourceUrl}}" style="width:400px">
 			</div>
 		</section>
 	</div>
