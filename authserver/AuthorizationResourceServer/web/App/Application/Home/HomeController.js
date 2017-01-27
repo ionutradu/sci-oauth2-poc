@@ -2,15 +2,17 @@
 	"use strict";
 
 	angular.module("app").controller("HomeController",
-			["$scope", "$location", "AuthService", homeController]);
+			["$scope", "$location", "$cookieStore", "AuthService", homeController]);
 
-	function homeController($scope, $location, AuthService) {
+	function homeController($scope, $location, $cookieStore, AuthService) {
 	    $scope.formData = {username: "", password: ""};
 	    $scope.unauth = false;
 	    $scope.signIn = function (formData) {
 	    	var queryParams = $location.search();
 	    	AuthService.get({client_id: queryParams.client_id, response_type: queryParams.response_type, callback_uri: queryParams.callback_uri, username: formData.username, password: formData.password}, function(response){
-	    		console.log(response)
+	    		$cookieStore.put("authorization_code", response.authorization_code);
+	    		$cookieStore.put("username", response.username);
+	    		location.href = "http://localhost:8090";
 	    	});
 	    };
 	    

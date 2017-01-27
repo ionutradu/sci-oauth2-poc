@@ -6,6 +6,7 @@
             "ngSanitize",
             "ngResource",
             "ngAnimate",
+            "ngCookies",
             "ui.bootstrap",
             "directivesTheme",
             "services"
