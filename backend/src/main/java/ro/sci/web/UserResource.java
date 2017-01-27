@@ -47,7 +47,7 @@ public class UserResource {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 
-        HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
+        HttpEntity<String> entity = new HttpEntity<String>(headers);
 
         ResponseEntity<PictureLocation> exchange = restTemplate.exchange(resourceUri, HttpMethod.GET, entity, PictureLocation.class);
 
