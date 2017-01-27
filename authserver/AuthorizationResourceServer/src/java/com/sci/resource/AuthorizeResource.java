@@ -58,6 +58,11 @@ public class AuthorizeResource {
             return Response.status(Status.BAD_REQUEST).build(); 
         }
         
+        if(username == null || password == null) {
+            URI loginPageUri = new URI("..?client_id=" + client_id + "&response_type=" + response_type + "&callback_uri=" + callback_uri);
+            return Response.temporaryRedirect(loginPageUri).build();
+        }
+        
         if(!Constants.checkUser(username, password)) {
             return Response.status(Status.UNAUTHORIZED).build();
         }
