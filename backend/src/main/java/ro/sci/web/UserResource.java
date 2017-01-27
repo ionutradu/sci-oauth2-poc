@@ -32,7 +32,7 @@ public class UserResource {
 
     @CrossOrigin(origins = "http://localhost:8090")
     @RequestMapping("/profile/picture")
-    public ResponseEntity<PictureLocation> getProfilePicture(@RequestParam(required = false) String authorization_code) throws URISyntaxException {
+    public ResponseEntity<String> getProfilePicture(@RequestParam(required = false) String authorization_code) throws URISyntaxException {
 
         if (StringUtils.isEmpty(authorization_code)) {
             String redirectUrl = authService.generateAuthUrl();
@@ -49,7 +49,7 @@ public class UserResource {
 
         HttpEntity<String> entity = new HttpEntity<String>(headers);
 
-        ResponseEntity<PictureLocation> exchange = restTemplate.exchange(resourceUri, HttpMethod.GET, entity, PictureLocation.class);
+        ResponseEntity<String> exchange = restTemplate.exchange(resourceUri, HttpMethod.GET, entity, String.class);
 
         return ResponseEntity.ok(exchange.getBody());
     }
