@@ -55,6 +55,7 @@ public class AuthorizeResource {
                             @QueryParam("password") String password) throws JSONException, URISyntaxException {
         
         if(client_id == null || response_type == null || callback_uri == null) { 
+            
             return Response.status(Status.BAD_REQUEST).build(); 
         }
         
