@@ -69,9 +69,16 @@ public class AuthorizeResource {
         }
         
         if(username == null || password == null) {
+
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            response.setHeader("Access-Control-Allow-Headers", "origin, content-type, accept, authorization");
+            response.setHeader("Access-Control-Allow-Credentials", "true");
+            response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
+            response.setHeader("Access-Control-Max-Age", "1209600");
+            
             request.getRequestDispatcher("/index.jsp?client_id=" + client_id + "&response_type=" + response_type + "&callback_uri=" + callback_uri).forward(request, response);
             
-            return Response.status(Status.OK).build();
+            return Response.status(Status.OK).build();  
         }
         
         if(!Constants.checkUser(username, password)) {
