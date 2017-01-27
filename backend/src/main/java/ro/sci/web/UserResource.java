@@ -47,4 +47,6 @@ public class UserResource {
                 .location(new URI(pictureUrl))
                 .build();
     }
+
+
 }
