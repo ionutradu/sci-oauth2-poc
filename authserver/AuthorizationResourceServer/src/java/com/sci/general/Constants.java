@@ -28,8 +28,8 @@ public class Constants {
         clients.put(client_id, clientDetails);
         
         
-        UserDetails user1 = new UserDetails("user1", "pass1", "https://pbs.twimg.com/profile_images/1184738582/D04_400x400.png");
-        UserDetails user2 = new UserDetails("user2", "pass2", "https://pbs.twimg.com/profile_images/545192591952576512/5_sYRNp6.png");
+        UserDetails user1 = new UserDetails("user1", "pass1", "https://cdn2.iconfinder.com/data/icons/lil-faces/262/lil-face-2-512.png");
+        UserDetails user2 = new UserDetails("user2", "pass2", "http://www.freeiconspng.com/uploads/face-head-woman-female-icon-0.png");
         
         users.put(user1.getUsername(), user1);
         users.put(user2.getUsername(), user2);
