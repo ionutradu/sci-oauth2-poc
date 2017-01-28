@@ -20,7 +20,6 @@ import java.util.Arrays;
 
 @RestController
 @RequestMapping("/app")
-@EnableWebMvc
 public class UserResource {
 
     @Autowired
@@ -47,7 +46,7 @@ public class UserResource {
         URI resourceUri = resourceService.getResourceUri(authorization_code);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+        headers.setAccept(Arrays.asList(MediaType.ALL));
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 

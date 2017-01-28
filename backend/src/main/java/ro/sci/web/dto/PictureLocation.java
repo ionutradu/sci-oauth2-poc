@@ -4,6 +4,9 @@ public class PictureLocation {
 
     private String url;
 
+    public PictureLocation() {
+    }
+
     public PictureLocation(String url) {
         this.url = url;
     }

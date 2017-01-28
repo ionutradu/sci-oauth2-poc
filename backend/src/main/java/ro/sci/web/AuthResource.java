@@ -20,7 +20,6 @@ import java.net.URISyntaxException;
 
 @RestController
 @RequestMapping("/app")
-@EnableWebMvc
 public class AuthResource {
 
     @Autowired
