@@ -9,6 +9,7 @@
 	    $scope.resourceUrl = "";
 		$scope.getData = function(req) {
 			$scope.data = {};
+			$scope.loading = true;
 			if($scope.authCode && $scope.user) {
 				ResourceService.get({authorization_code: $scope.authCode}, function(response) {
 				    $scope.resourceUrl = response.url;
@@ -32,6 +33,7 @@
 		$scope.logOut = function() {
 			$cookieStore.remove("authorization_code");
 			$cookieStore.remove("username");
+			$scope.resourceUrl = "";
 			
 			$scope.checkAuth();
 		}
